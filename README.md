@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# WHYS - REACT
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hopefully these docs and all the comments will be enough for you, but if something will be unclear, feel free to ask me.
 
-## Available Scripts
+## Task / Problem
 
-In the project directory, you can run:
+Úkolem je připravit projekt, kde bude jedna stránka která má vykreslit článek a komentáře k němu. Komentáře se musí vykreslit až po vykreslení článku a jsou seřazeny od nejnovějšího nahoře.
 
-### `npm start`
+Napiš to v Reactu tak, jak to umíš. Pokud možno, piš to funkcionálně (ne class komponenty). Můžeš nám napsat do emailu cokoliv, co tě napadlo během psaní a jak se to většinou řeší v produkčním kódu a proč.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Jak to má vypadat:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- vytvoř dvě komponenty, jedna vykreslí článek a druhá komentáře
+- vytvoř komponentu `Application` která vykreslí ty dvě komponenty a ještě tlačítko pro načtení dalších komentářů (zobraz až po získání a vykreslení komentářů)
+- komponenta `Application` bude získávat data (článek, komentáře, další komentáře)
+- simuluj získání dat asynchronním kódem (zobrazí se po nějaké době)
+- data jsou definovana v `app.html`, dostupné globálně
 
-### `npm test`
+Pokyny:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- kód by měl běžet v Chrome 80 a novější
+- jak si poradíš se styly je na tobě a uvítáme, když si s tím pohraješ
+- kód musí být čitelný a dobře fungovat
+- počítej s případným rozšířením projektu, ale ať je kód zároveň přiměřeně jednoduchý vůči zadání
+- v souboru `README.md` sepiš jak projekt rozjet
+- Finální projekt nám pošli jako `GitHub` (nebo Gitlab atp.) repozitář.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Solution
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+I have created simple React application that simulate asynchronous data fetching with some delay. 
+The data fetching is done only by the ```App.tsx``` component which then dynamically and conditionally renders 
+components ```Article.tsx``` and ```Comments.tsx``` that are responsible for the data display.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+On top of these 3 components, there is also Loader component.
 
-### `npm run eject`
+The application is fully typed. The data models can be found in ```src/lib/models.ts```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+For the styling, I have chosen library styled-components. It might be a little bit heavyweight for this small task,
+but I wanted to show the usage of it.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application was tested on Firefox 128.0.2 and Chromium 126.0.6478.182
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Local setup
 
-## Learn More
+1. Clone the repository
+2. Run ```npm install``` for installing all dependencies
+3. Run ```npm start``` for starting the local development server
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Notes / Suggestions / Scaling improvements
+
+- For bigger project I would be glad to separate data fetching into more components
+- Some functions that are written inline could be separated for better reusabilty. For example date parsing or comments sorting.
+- The data fetching could be also broken into parts, for example by creating object with endpoints and another object with api helpers.
+- Instead of using alert messages, more sophisticated error handling could be implemented. For example some notifications store with useNotification hook.
