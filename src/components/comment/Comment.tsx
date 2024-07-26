@@ -9,9 +9,12 @@ type CommentProps = {
 export const Comment: React.FC<CommentProps> = ({author, text, date}) => {
   return (
     <StyledComment>
-      <p><b>{author}</b></p>
-      <p>{date}</p>
-      <p>text</p>
+      <div>
+        <p className={"author"}><b>{author}</b></p>
+        {/* Basing date parsing, for better result I would suggest to separate parsing function into some helperFunctions.ts */}
+        <p className={"date"}>{new Date(date).toLocaleString()}</p>
+      </div>
+      <p className={"text"}>{text}</p>
     </StyledComment>
   )
 }

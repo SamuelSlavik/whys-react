@@ -1,4 +1,5 @@
 import React from "react";
+import {StyledLoader} from "./Loader.styled";
 
 type LoaderProps = {
   loading?: boolean
@@ -10,7 +11,7 @@ export const Loader: React.FC<LoaderProps> = ({loading = true, children}) => {
     <>
       {
         loading ?
-          <div>Loading... </div> :
+          <StyledLoader></StyledLoader> :
           <>{children}</>
       }
     </>

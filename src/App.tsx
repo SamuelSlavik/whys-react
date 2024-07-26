@@ -5,8 +5,18 @@ import {Article} from "./components/article/Article";
 import {Comment} from "./components/comment/Comment";
 import {Loader} from "./components/loader/Loader";
 import {ArticleModel, CommentModel, LoadingFlags} from "./lib/models";
+import {ThemeProvider} from "styled-components";
+import {StyledButton} from "./components/styles/Button.styled";
 
 function App(): JSX.Element {
+  // Theme colors for styled components
+  const theme = {
+    primaryColor: "#595959",
+    secondaryColor: "#b3b3b3",
+    backgroundColor: "#FFFFFF",
+    accentColor: "#178282",
+  }
+
   // Loading flag for each object to display the content when it's ready
   // Doesn't like the idea of having object with three attributes, but according to the assignment, only the app.tsx is responsible for loading data
   // For better scaling would love to separate these fetches into more components
@@ -68,7 +78,10 @@ function App(): JSX.Element {
   // Load article
   // Simulating a delay of 2 seconds (easy counting)
   // chaining the fetchComments after the article is fetched
+  // Cleaning the articles in the begining for better testing experience
   const fetchArticle = async () => {
+    setComments([])
+    setAllCommentsLoaded(false)
     setLoading((prev) => ({...prev, article: true}))
     try {
       const response = await new Promise<ArticleModel>(resolve =>
@@ -91,32 +104,33 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <Container>
-      {/* Conditionally rendering articles and comments if they are loaded. The loader is just a ternary operator wrapped into single component. */}
-      <Loader loading={loading.article}>
-        <Article
-          author={article?.author}
-          date={article?.date}
-          text={article?.text}
-        />
-      </Loader>
-      <Loader loading={loading.comments}>
-        {comments.map((comment) => (
-          <Comment
-            key={comment.id}
-            author={comment.author}
-            date={comment.date}
-            text={comment.text}
+    <ThemeProvider theme={theme}>
+      <Container>
+        {/* Conditionally rendering articles and comments if they are loaded. The loader is just a ternary operator wrapped into single component. */}
+        <Loader loading={loading.article}>
+          <Article
+            author={article?.author}
+            date={article?.date}
+            text={article?.text}
           />
-        ))}
-      </Loader>
-      {/* Rendering the button only if comments are loaded and hiding it again if all comments are loaded */}
-      {
-        (comments.length > 0 && !allCommentsLoaded) && <button onClick={fetchMoreComments}>Load more comments</button>
-      }
-      <Loader loading={loading.moreComments}></Loader>
-
-    </Container>
+        </Loader>
+        <Loader loading={loading.comments}>
+          {comments.map(({id, author, date, text}) => (
+            <Comment
+              key={id}
+              author={author}
+              date={date}
+              text={text}
+            />
+          ))}
+        </Loader>
+        {/* Rendering the button only if comments are loaded and hiding it again if all comments are loaded */}
+        {
+          (comments.length > 0 && !allCommentsLoaded) && <StyledButton onClick={fetchMoreComments}>Load more comments</StyledButton>
+        }
+        <Loader loading={loading.moreComments}></Loader>
+      </Container>
+    </ThemeProvider>
   )
 }
 
