@@ -114,15 +114,18 @@ function App(): JSX.Element {
             text={article?.text}
           />
         </Loader>
+        {/* Sorting the comments directly in JSX. For bigger project, definitely suggesting creating own function for it */}
         <Loader loading={loading.comments}>
-          {comments.map(({id, author, date, text}) => (
-            <Comment
-              key={id}
-              author={author}
-              date={date}
-              text={text}
-            />
-          ))}
+          {comments
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .map(({ id, author, date, text }) => (
+              <Comment
+                key={id}
+                author={author}
+                date={date}
+                text={text}
+              />
+            ))}
         </Loader>
         {/* Rendering the button only if comments are loaded and hiding it again if all comments are loaded */}
         {
